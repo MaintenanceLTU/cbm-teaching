@@ -167,8 +167,8 @@ grid on;
 ```
 
 ## Additional notes
-### FFT scaling
-For a signal with `N` samples, dividing `Y=abs(fft(signal))` by `N` normalizes the spectrum. For a one-sided spectrum of a real-valued signal, the negative-frequency components are omitted. To preserve the total signal amplitude, the amplitudes of the interior positive-frequency bins are doubled:
+### Spectrum scaling
+For a signal with `N` samples and spectral magnitude `Y=abs(fft(signal))`, dividing `Y` by `N` normalizes the spectrum. For a one-sided spectrum of a real-valued signal, the negative-frequency components are omitted. To preserve the total signal amplitude, the amplitudes of the interior positive-frequency bins are doubled:
 
 $$
 A[k] =
@@ -180,6 +180,17 @@ A[k] =
 $$
 
 The DC and Nyquist components are not doubled because they do not have corresponding negative-frequency counterparts. Only the interior positive-frequency bins are doubled to account for the removed negative-frequency components.
+
+#### Spectrum quantities
+
+Different spectral quantities emphasize different properties of a signal. The amplitude spectrum is useful for identifying sinusoidal amplitudes. The power spectrum describes the signal's mean-square contribution in each frequency bin, while the power spectral density (PSD) describes power per unit bandwidth and is especially useful for broadband noise analysis.
+
+| Quantity               | Typical expression                              | Units                  |
+|------------------------|-------------------------------------------------|------------------------|
+| Magnitude spectrum     | $\lvert Y[k] \rvert$                            | signal units × samples |
+| Amplitude spectrum     | $\lvert Y[k] \rvert/N$, with one-sided correction | signal units           |
+| Power spectrum         | $\lvert Y[k] \rvert^2/N$                      | signal units²          |
+| Power spectral density | $\lvert Y[k] \rvert^2/(F_sN)$                   | signal units²/Hz       |
 
 
 ### Nyquist
@@ -198,17 +209,6 @@ In practical measurement systems, an analog anti-aliasing filter is normally app
 
 ### Leakage
 Spectral leakage can occur when a signal does not contain an integer number of cycles within the sampled interval. Applying a window such as a Hann window reduces leakage, but the window's amplitude effect should be accounted for when accurate amplitude estimates are required.
-
-### Spectrum
-
-Different spectral quantities emphasize different properties of a signal. The amplitude spectrum is useful for identifying sinusoidal amplitudes. The power spectrum describes the signal's mean-square contribution in each frequency bin, while the power spectral density (PSD) describes power per unit bandwidth and is especially useful for broadband noise analysis.
-
-| Quantity               | Typical expression                              | Units                  |
-|------------------------|-------------------------------------------------|------------------------|
-| Magnitude spectrum     | $\lvert Y[k] \rvert$                            | signal units × samples |
-| Amplitude spectrum     | $\lvert Y[k] \rvert/N$, with one-sided correction | signal units           |
-| Power spectrum         | $\lvert Y[k] \rvert^2/N$                      | signal units²          |
-| Power spectral density | $\lvert Y[k] \rvert^2/(F_sN)$                   | signal units²/Hz       |
 
 
 ### Read more
