@@ -168,7 +168,7 @@ grid on;
 
 ## Additional notes
 ### Spectrum scaling
-For a signal with `N` samples and spectral magnitude `Y=abs(fft(signal))`, dividing `Y` by `N` normalizes the spectrum. For a one-sided spectrum of a real-valued signal, the negative-frequency components are omitted. To preserve the total signal amplitude, the amplitudes of the interior positive-frequency bins are doubled:
+For a signal with `N` samples and magnitude spectrum `Y=abs(fft(signal))`, dividing `Y` by `N` normalizes the spectrum. For a one-sided spectrum of a real-valued signal, the negative-frequency components are omitted. To preserve the total signal amplitude, the amplitudes of the interior positive-frequency bins are doubled:
 
 $$
 A[k] =
@@ -181,7 +181,7 @@ $$
 
 The DC and Nyquist components are not doubled because they do not have corresponding negative-frequency counterparts. Only the interior positive-frequency bins are doubled to account for the removed negative-frequency components.
 
-### Power spectrum
+### Power spectra
 #### Average power per FFT bin
 
 $$
