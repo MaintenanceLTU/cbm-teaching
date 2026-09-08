@@ -181,7 +181,44 @@ $$
 
 The DC and Nyquist components are not doubled because they do not have corresponding negative-frequency counterparts. Only the interior positive-frequency bins are doubled to account for the removed negative-frequency components.
 
-#### Spectrum quantities
+### Power spectrum
+#### Average power per FFT bin
+
+$$
+P[k] = \frac{\lvert Y[k]\rvert^2}{N^2}
+$$
+
+Its sum equals the time-domain mean-square value:
+
+$$
+\sum_k P[k]
+=
+\frac{1}{N}\sum_n \lvert y[n]\rvert^2
+$$
+
+#### Energy per FFT bin
+
+$$
+E[k] = \frac{\lvert Y[k]\rvert^2}{N}
+$$
+
+Its sum equals the total signal energy:
+
+$$
+\sum_k E[k]
+=
+\sum_n \lvert y[n]\rvert^2
+$$
+
+### Power spectral density
+
+$$
+S[k] = \frac{\lvert Y[k]\rvert^2}{F_sN}
+$$
+
+The power spectral density has units of signal units squared per hertz.
+
+### Spectrum quantities
 
 Different spectral quantities emphasize different properties of a signal. The amplitude spectrum is useful for identifying sinusoidal amplitudes. The power spectrum describes the signal's mean-square contribution in each frequency bin, while the power spectral density (PSD) describes power per unit bandwidth and is especially useful for broadband noise analysis.
 
@@ -189,7 +226,7 @@ Different spectral quantities emphasize different properties of a signal. The am
 |------------------------|-------------------------------------------------|------------------------|
 | Magnitude spectrum     | $\lvert Y[k] \rvert$                            | signal units × samples |
 | Amplitude spectrum     | $\lvert Y[k] \rvert/N$, with one-sided correction | signal units           |
-| Power spectrum         | $\lvert Y[k] \rvert^2/N$                      | signal units²          |
+| Power spectrum         | $\lvert Y[k] \rvert^2/N^2$                      | signal units²          |
 | Power spectral density | $\lvert Y[k] \rvert^2/(F_sN)$                   | signal units²/Hz       |
 
 
