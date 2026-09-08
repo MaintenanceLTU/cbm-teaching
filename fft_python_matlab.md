@@ -186,6 +186,7 @@ $$
 The DC and Nyquist components are not doubled because they do not have corresponding negative-frequency counterparts. Only the interior positive-frequency bins are doubled to account for the removed negative-frequency components.
 
 ### Power spectra
+
 #### Average power per FFT bin
 
 $$
