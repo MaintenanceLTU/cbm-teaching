@@ -196,9 +196,7 @@ $$
 Its sum equals the time-domain mean-square value:
 
 $$
-\sum_k P[k]
-=
-\frac{1}{N}\sum_n \lvert y[n]\rvert^2
+\sum_k P[k] = \frac{1}{N}\sum_n \lvert y[n]\rvert^2
 $$
 
 #### Energy per FFT bin
@@ -210,9 +208,7 @@ $$
 Its sum equals the total signal energy:
 
 $$
-\sum_k E[k]
-=
-\sum_n \lvert y[n]\rvert^2
+\sum_k E[k] = \sum_n \lvert y[n]\rvert^2
 $$
 
 ### Power spectral density
