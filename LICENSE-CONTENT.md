@@ -3,6 +3,11 @@
 Copyright © 2026 Johan Odelius
 
 Except where otherwise noted, the educational materials in this repository are licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+This includes:
+- explanatory text and documentation;
+- lecture notes and exercises;
+- figures, diagrams, and plots created for this repository; and
+- other non-software educational content.
 
 You are free to:
 
@@ -20,3 +25,7 @@ https://creativecommons.org/licenses/by/4.0/
 or
 
 https://creativecommons.org/licenses/by/4.0/legalcode
+
+## Source code
+
+Python, MATLAB, and other source code in this repository are licensed separately under the [MIT License](LICENSE-CODE).
