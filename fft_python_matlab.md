@@ -173,9 +173,9 @@ For a signal with `N` samples, dividing `Y=abs(fft(signal))` by `N` normalizes t
 $$
 A[k] =
 \begin{cases}
-\dfrac{\lvert Y[k]\rvert}{N}, & k = 0, \\[8pt]
-\dfrac{2\lvert Y[k]\rvert}{N}, & 0 < k < N/2, \\[8pt]
-\dfrac{\lvert Y[k]\rvert}{N}, & k = N/2.
+\lvert Y[k]\rvert / N, & k = 0, \\
+2\lvert Y[k]\rvert / N, & 0 < k < N/2, \\
+\lvert Y[k]\rvert / N, & k = N/2.
 \end{cases}
 $$
 
