@@ -1,0 +1,223 @@
+# Fast Fourier Transform (FFT) with examples in Python and MATLAB
+
+The Fast Fourier Transform (FFT) efficiently computes the discrete Fourier transform (DFT) of a sampled signal, providing a frequency-domain representation of the data. The examples below show how to:
+
+- create a sampled signal;
+- compute its FFT;
+- scale the FFT to obtain an amplitude spectrum; and
+- plot the time-domain signal and its frequency content.
+
+
+## Examples
+
+The example creates a signal containing sinusoids at 50 Hz, 120 Hz, and 600 Hz, then adds zero-mean Gaussian noise. It plots the noisy time-domain signal and its two-sided and one-sided amplitude spectra.
+
+### Python
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set parameters
+Fs = 2048  # Sampling frequency (Hz)
+duration = 2  # Signal duration (s)
+N = duration*Fs  # Number of samples
+t = np.arange(N)/Fs  # Time vector (s)
+
+# Create sinusoidal signal
+signal_frequencies = [50, 120, 600] 
+signal_amplitudes = [0.7, 1.0, 0.5] 
+
+x = np.zeros(N)
+
+for frequency, amplitude in zip(signal_frequencies, signal_amplitudes):
+    x += amplitude * np.sin(2 * np.pi * frequency * t)
+
+# Add zero-mean Gaussian noise
+y = x + np.random.standard_normal(size=x.shape)
+
+# Two-sided FFT and its frequency bins.
+Y = np.fft.fft(y)
+A2 = np.abs(Y) / N
+F2 = np.fft.fftfreq(N, d=1/Fs)
+
+# Shift to -Fs/2 to Fs/2, default is 0, positive freq, negative freq
+A2 = np.fft.fftshift(A2)
+F2 = np.fft.fftshift(F2)
+
+# One-sided FFT (for a real-valued signal).
+Y1 = np.fft.rfft(y)
+A1 = 2*np.abs(Y1)/N
+F1 = np.fft.rfftfreq(N, d=1/Fs)
+
+# Do not double DC
+A1[0] /= 2          
+# Do not double Nyquist
+if N % 2 == 0:
+    A1[-1] /= 2     
+
+
+# Plot the results
+plt.figure()
+
+# Time-domain signal
+plt.subplot(3, 1, 1)
+plt.plot(t, y)
+plt.title("Time-Domain Signal")
+plt.xlabel("Time (s)")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+# Two-sided amplitude spectrum
+plt.subplot(3, 1, 2)
+plt.plot(F2, A2)
+plt.title("Two-Sided Amplitude Spectrum")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude")
+plt.xlim(-Fs/2, Fs/2)
+plt.ylim(0, 1.1)
+plt.grid(True)
+
+# One-sided amplitude spectrum
+plt.subplot(3, 1, 3)
+plt.plot(F1, A1)
+plt.title("One-Sided Amplitude Spectrum")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude")
+plt.xlim(0, Fs/2)
+plt.ylim(0, 1.1)
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+### MATLAB
+
+```matlab
+% Set parameters
+Fs = 2048;                 % Sampling frequency (Hz)
+duration = 2;              % Duration (s)
+N = duration*Fs;           % Number of samples
+t = (0:N-1)./Fs;           % Time vector (s)
+
+% Make t column vector
+t = t(:);                  % or reshape(t, N, 1);
+
+% Create the sinusoidal signal
+signal_frequencies = [50, 120, 600];
+signal_amplitudes = [0.7, 1.0, 0.5];
+
+x = zeros(size(t));
+for i = 1:length(signal_frequencies)
+    x = x + signal_amplitudes(i)*sin(2*pi * signal_frequencies(i) * t);
+end
+
+% Using vector multiplication the above can be implemented as
+% x = sin(2*pi*t*signal_frequencies)*signal_amplitudes';
+
+% Add zero-mean Gaussian noise
+y = x + randn(size(t));
+
+% Compute the two-sided fft.
+Y = fft(y);
+
+% fft output order: DC, positive frequencies, then negative frequencies
+% fftshift centers DC and orders the spectrum from -Fs/2 to Fs/2
+A2 = fftshift(abs(Y)./N);  
+F2 = (-floor(N/2):ceil(N/2)-1)*(Fs/N);
+
+% Convert it to a one-sided fft.
+A1 = 2*abs(Y(1:floor(N/2)+1))/N;
+F1 = (0:floor(N/2))*Fs/N;
+
+% Do not double DC
+A1(1) = A1(1)/2;
+% Do not double Nyquist
+if mod(N,2) == 0
+    A1(end) = A1(end)/2;
+end
+
+% Plots
+figure;
+subplot(3,1,1)
+plot(t, y);
+title('Signal with Zero-Mean Random Noise');
+xlabel('Time (s)');
+ylabel('Amplitude');
+grid on;
+
+subplot(3,1,2)
+plot(F2, A2);
+title('Two-sided Amplitude Spectrum');
+xlabel('Frequency (Hz)');
+ylabel('Amplitude');
+xlim([-Fs,Fs]./2);
+ylim([0,1.1]);
+grid on;
+
+subplot(3,1,3)
+plot(F1, A1);
+title('One-sided Amplitude Spectrum');
+xlabel('Frequency (Hz)');
+ylabel('Amplitude');
+xlim([0,Fs/2]);
+ylim([0,1.1]);
+grid on;
+```
+
+## Additional notes
+### FFT scaling
+For a signal with `N` samples, dividing `Y=abs(fft(signal))` by `N` normalizes the spectrum. For a one-sided spectrum of a real-valued signal, the negative-frequency components are omitted. To preserve the total signal amplitude, the amplitudes of the interior positive-frequency bins are doubled:
+
+$$
+A[k] =
+\begin{cases}
+\dfrac{\lvert Y[k]\rvert}{N}, & k = 0, \\[8pt]
+\dfrac{2\lvert Y[k]\rvert}{N}, & 0 < k < N/2, \\[8pt]
+\dfrac{\lvert Y[k]\rvert}{N}, & k = N/2.
+\end{cases}
+$$
+
+The DC and Nyquist components are not doubled because they do not have corresponding negative-frequency counterparts. Only the interior positive-frequency bins are doubled to account for the removed negative-frequency components.
+
+
+### Nyquist
+
+The **Nyquist frequency** is half the sampling frequency:
+
+$$
+f_\text{Nyquist} = \frac{F_s}{2}
+$$
+
+It is the highest frequency that can be represented without aliasing in a sampled signal. Frequency components above the Nyquist frequency are reflected back into the observable frequency range and appear at incorrect frequencies, a phenomenon known as **aliasing**.
+
+To avoid aliasing, the sampling frequency should be greater than twice the highest frequency present in the signal $F_s > 2f_\text{max}$. If a frequency component exceeds the Nyquist frequency, it is observed at the aliased frequency $f_\text{alias} = \left|f - kF_s\right|$ for an appropriate integer $(k)$ that maps the frequency into the interval $[0, F_s/2]$.
+
+In practical measurement systems, an analog anti-aliasing filter is normally applied before sampling to attenuate frequency components above the Nyquist frequency.
+
+### Leakage
+Spectral leakage can occur when a signal does not contain an integer number of cycles within the sampled interval. Applying a window such as a Hann window reduces leakage, but the window's amplitude effect should be accounted for when accurate amplitude estimates are required.
+
+### Spectrum
+
+Different spectral quantities emphasize different properties of a signal. The amplitude spectrum is useful for identifying sinusoidal amplitudes. The power spectrum describes the signal's mean-square contribution in each frequency bin, while the power spectral density (PSD) describes power per unit bandwidth and is especially useful for broadband noise analysis.
+
+| Quantity               | Typical expression                              | Units                  |
+|------------------------|-------------------------------------------------|------------------------|
+| Magnitude spectrum     | $\lvert Y[k] \rvert$                            | signal units × samples |
+| Amplitude spectrum     | $\lvert Y[k] \rvert/N$, with one-sided correction | signal units           |
+| Power spectrum         | $\lvert Y[k] \rvert^2/N$                      | signal units²          |
+| Power spectral density | $\lvert Y[k] \rvert^2/(F_sN)$                   | signal units²/Hz       |
+
+
+### Read more
+
+- [NumPy: Discrete Fourier Transform routines](https://numpy.org/doc/stable/reference/routines.fft.html)
+- [NumPy: `numpy.fft.fft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html)
+- [NumPy: `numpy.fft.rfft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html)
+- [NumPy: `numpy.fft.fftfreq`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html)
+- [NumPy: `numpy.fft.rfftfreq`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html)
+- [NumPy: `numpy.fft.fftshift`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fftshift.html)
+- [MathWorks: MATLAB `fft`](https://www.mathworks.com/help/matlab/ref/fft.html)
+- [MathWorks: Avoid aliasing in signal downsampling](https://www.mathworks.com/help/signal/ug/avoid-aliasing-in-signal-downsampling.html)

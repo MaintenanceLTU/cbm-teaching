@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>fft_python_matlab</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1
+id="fast-fourier-transform-fft-with-examples-in-python-and-matlab">Fast
+Fourier Transform (FFT) with examples in Python and MATLAB</h1>
+<p>The Fast Fourier Transform (FFT) efficiently computes the discrete
+Fourier transform (DFT) of a sampled signal, providing a
+frequency-domain representation of the data. The examples below show how
+to:</p>
+<ul>
+<li>create a sampled signal;</li>
+<li>compute its FFT;</li>
+<li>scale the FFT to obtain an amplitude spectrum; and</li>
+<li>plot the time-domain signal and its frequency content.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<p>The example creates a signal containing sinusoids at 50 Hz, 120 Hz,
+and 600 Hz, then adds zero-mean Gaussian noise. It plots the noisy
+time-domain signal and its two-sided and one-sided amplitude
+spectra.</p>
+<h3 id="python">Python</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set parameters</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Fs <span class="op">=</span> <span class="dv">2048</span>  <span class="co"># Sampling frequency (Hz)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>duration <span class="op">=</span> <span class="dv">2</span>  <span class="co"># Signal duration (s)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> duration<span class="op">*</span>Fs  <span class="co"># Number of samples</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(N)<span class="op">/</span>Fs  <span class="co"># Time vector (s)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create sinusoidal signal</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>signal_frequencies <span class="op">=</span> [<span class="dv">50</span>, <span class="dv">120</span>, <span class="dv">600</span>] </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>signal_amplitudes <span class="op">=</span> [<span class="fl">0.7</span>, <span class="fl">1.0</span>, <span class="fl">0.5</span>] </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.zeros(N)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> frequency, amplitude <span class="kw">in</span> <span class="bu">zip</span>(signal_frequencies, signal_amplitudes):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    x <span class="op">+=</span> amplitude <span class="op">*</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> frequency <span class="op">*</span> t)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add zero-mean Gaussian noise</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x <span class="op">+</span> np.random.standard_normal(size<span class="op">=</span>x.shape)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-sided FFT and its frequency bins.</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.fft.fft(y)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>A2 <span class="op">=</span> np.<span class="bu">abs</span>(Y) <span class="op">/</span> N</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>F2 <span class="op">=</span> np.fft.fftfreq(N, d<span class="op">=</span><span class="dv">1</span><span class="op">/</span>Fs)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Shift to -Fs/2 to Fs/2, default is 0, positive freq, negative freq</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>A2 <span class="op">=</span> np.fft.fftshift(A2)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>F2 <span class="op">=</span> np.fft.fftshift(F2)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># One-sided FFT (for a real-valued signal).</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Y1 <span class="op">=</span> np.fft.rfft(y)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>A1 <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.<span class="bu">abs</span>(Y1)<span class="op">/</span>N</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>F1 <span class="op">=</span> np.fft.rfftfreq(N, d<span class="op">=</span><span class="dv">1</span><span class="op">/</span>Fs)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not double DC</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>A1[<span class="dv">0</span>] <span class="op">/=</span> <span class="dv">2</span>          </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not double Nyquist</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> N <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    A1[<span class="op">-</span><span class="dv">1</span>] <span class="op">/=</span> <span class="dv">2</span>     </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the results</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-domain signal</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.plot(t, y)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;Time-Domain Signal&quot;</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Time (s)&quot;</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Amplitude&quot;</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-sided amplitude spectrum</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.plot(F2, A2)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;Two-Sided Amplitude Spectrum&quot;</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Frequency (Hz)&quot;</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Amplitude&quot;</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="op">-</span>Fs<span class="op">/</span><span class="dv">2</span>, Fs<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, <span class="fl">1.1</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co"># One-sided amplitude spectrum</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>plt.plot(F1, A1)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;One-Sided Amplitude Spectrum&quot;</span>)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Frequency (Hz)&quot;</span>)</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Amplitude&quot;</span>)</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, Fs<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, <span class="fl">1.1</span>)</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<h3 id="matlab">MATLAB</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Set parameters</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">Fs</span> <span class="op">=</span> <span class="fl">2048</span><span class="op">;</span>                 <span class="co">% Sampling frequency (Hz)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">duration</span> <span class="op">=</span> <span class="fl">2</span><span class="op">;</span>              <span class="co">% Duration (s)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">N</span> <span class="op">=</span> <span class="va">duration</span><span class="op">*</span><span class="va">Fs</span><span class="op">;</span>           <span class="co">% Number of samples</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">t</span> <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="va">N</span><span class="op">-</span><span class="fl">1</span>)<span class="op">./</span><span class="va">Fs</span><span class="op">;</span>           <span class="co">% Time vector (s)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Make t column vector</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="va">t</span> <span class="op">=</span> <span class="va">t</span>(<span class="op">:</span>)<span class="op">;</span>                  <span class="co">% or reshape(t, N, 1);</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">% Create the sinusoidal signal</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="va">signal_frequencies</span> <span class="op">=</span> [<span class="fl">50</span><span class="op">,</span> <span class="fl">120</span><span class="op">,</span> <span class="fl">600</span>]<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="va">signal_amplitudes</span> <span class="op">=</span> [<span class="fl">0.7</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="va">x</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">t</span>))<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">signal_frequencies</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">x</span> <span class="op">+</span> <span class="va">signal_amplitudes</span>(<span class="va">i</span>)<span class="op">*</span><span class="va">sin</span>(<span class="fl">2</span><span class="op">*</span><span class="va">pi</span> <span class="op">*</span> <span class="va">signal_frequencies</span>(<span class="va">i</span>) <span class="op">*</span> <span class="va">t</span>)<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">% Using vector multiplication the above can be implemented as</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">% x = sin(2*pi*t*signal_frequencies)*signal_amplitudes&#39;;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">% Add zero-mean Gaussian noise</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">x</span> <span class="op">+</span> <span class="va">randn</span>(<span class="va">size</span>(<span class="va">t</span>))<span class="op">;</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">% Compute the two-sided fft.</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">fft</span>(<span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">% fft output order: DC, positive frequencies, then negative frequencies</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">% fftshift centers DC and orders the spectrum from -Fs/2 to Fs/2</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="va">A2</span> <span class="op">=</span> <span class="va">fftshift</span>(<span class="va">abs</span>(<span class="va">Y</span>)<span class="op">./</span><span class="va">N</span>)<span class="op">;</span>  </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="va">F2</span> <span class="op">=</span> (<span class="op">-</span><span class="va">floor</span>(<span class="va">N</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="va">ceil</span>(<span class="va">N</span><span class="op">/</span><span class="fl">2</span>)<span class="op">-</span><span class="fl">1</span>)<span class="op">*</span>(<span class="va">Fs</span><span class="op">/</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert it to a one-sided fft.</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="va">A1</span> <span class="op">=</span> <span class="fl">2</span><span class="op">*</span><span class="va">abs</span>(<span class="va">Y</span>(<span class="fl">1</span><span class="op">:</span><span class="va">floor</span>(<span class="va">N</span><span class="op">/</span><span class="fl">2</span>)<span class="op">+</span><span class="fl">1</span>))<span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="va">F1</span> <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="va">floor</span>(<span class="va">N</span><span class="op">/</span><span class="fl">2</span>))<span class="op">*</span><span class="va">Fs</span><span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">% Do not double DC</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="va">A1</span>(<span class="fl">1</span>) <span class="op">=</span> <span class="va">A1</span>(<span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span><span class="op">;</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">% Do not double Nyquist</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="va">mod</span>(<span class="va">N</span><span class="op">,</span><span class="fl">2</span>) <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="va">A1</span>(<span class="kw">end</span>) <span class="op">=</span> <span class="va">A1</span>(<span class="kw">end</span>)<span class="op">/</span><span class="fl">2</span><span class="op">;</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">% Plots</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="va">figure</span><span class="op">;</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="va">subplot</span>(<span class="fl">3</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">t</span><span class="op">,</span> <span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="va">title</span>(<span class="ss">&#39;Signal with Zero-Mean Random Noise&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">&#39;Time (s)&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">&#39;Amplitude&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="va">grid</span> <span class="va">on</span><span class="op">;</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="va">subplot</span>(<span class="fl">3</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">F2</span><span class="op">,</span> <span class="va">A2</span>)<span class="op">;</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="va">title</span>(<span class="ss">&#39;Two-sided Amplitude Spectrum&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">&#39;Frequency (Hz)&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">&#39;Amplitude&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="va">xlim</span>([<span class="op">-</span><span class="va">Fs</span><span class="op">,</span><span class="va">Fs</span>]<span class="op">./</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="va">ylim</span>([<span class="fl">0</span><span class="op">,</span><span class="fl">1.1</span>])<span class="op">;</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="va">grid</span> <span class="va">on</span><span class="op">;</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="va">subplot</span>(<span class="fl">3</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">3</span>)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">F1</span><span class="op">,</span> <span class="va">A1</span>)<span class="op">;</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="va">title</span>(<span class="ss">&#39;One-sided Amplitude Spectrum&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">&#39;Frequency (Hz)&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">&#39;Amplitude&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="va">xlim</span>([<span class="fl">0</span><span class="op">,</span><span class="va">Fs</span><span class="op">/</span><span class="fl">2</span>])<span class="op">;</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="va">ylim</span>([<span class="fl">0</span><span class="op">,</span><span class="fl">1.1</span>])<span class="op">;</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="va">grid</span> <span class="va">on</span><span class="op">;</span></span></code></pre></div>
+<h2 id="additional-notes">Additional notes</h2>
+<h3 id="fft-scaling">FFT scaling</h3>
+<p>For a signal with <code>N</code> samples, dividing
+<code>Y=abs(fft(signal))</code> by <code>N</code> normalizes the
+spectrum. For a one-sided spectrum of a real-valued signal, the
+negative-frequency components are omitted. To preserve the total signal
+amplitude, the amplitudes of the interior positive-frequency bins are
+doubled:</p>
+<p><span class="math display">\[
+A[k] =
+\begin{cases}
+\dfrac{\lvert Y[k]\rvert}{N}, &amp; k = 0, \\[8pt]
+\dfrac{2\lvert Y[k]\rvert}{N}, &amp; 0 &lt; k &lt; N/2, \\[8pt]
+\dfrac{\lvert Y[k]\rvert}{N}, &amp; k = N/2.
+\end{cases}
+\]</span></p>
+<p>The DC and Nyquist components are not doubled because they do not
+have corresponding negative-frequency counterparts. Only the interior
+positive-frequency bins are doubled to account for the removed
+negative-frequency components.</p>
+<h3 id="nyquist">Nyquist</h3>
+<p>The <strong>Nyquist frequency</strong> is half the sampling
+frequency:</p>
+<p><span class="math display">\[
+f_\text{Nyquist} = \frac{F_s}{2}
+\]</span></p>
+<p>It is the highest frequency that can be represented without aliasing
+in a sampled signal. Frequency components above the Nyquist frequency
+are reflected back into the observable frequency range and appear at
+incorrect frequencies, a phenomenon known as
+<strong>aliasing</strong>.</p>
+<p>To avoid aliasing, the sampling frequency should be greater than
+twice the highest frequency present in the signal <span
+class="math inline">\(F_s &gt; 2f_\text{max}\)</span>. If a frequency
+component exceeds the Nyquist frequency, it is observed at the aliased
+frequency <span class="math inline">\(f_\text{alias} = \left|f -
+kF_s\right|\)</span> for an appropriate integer <span
+class="math inline">\((k)\)</span> that maps the frequency into the
+interval <span class="math inline">\([0, F_s/2]\)</span>.</p>
+<p>In practical measurement systems, an analog anti-aliasing filter is
+normally applied before sampling to attenuate frequency components above
+the Nyquist frequency.</p>
+<h3 id="leakage">Leakage</h3>
+<p>Spectral leakage can occur when a signal does not contain an integer
+number of cycles within the sampled interval. Applying a window such as
+a Hann window reduces leakage, but the window’s amplitude effect should
+be accounted for when accurate amplitude estimates are required.</p>
+<h3 id="spectrum">Spectrum</h3>
+<p>Different spectral quantities emphasize different properties of a
+signal. The amplitude spectrum is useful for identifying sinusoidal
+amplitudes. The power spectrum describes the signal’s mean-square
+contribution in each frequency bin, while the power spectral density
+(PSD) describes power per unit bandwidth and is especially useful for
+broadband noise analysis.</p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 50%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Typical expression</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Magnitude spectrum</td>
+<td><span class="math inline">\(\lvert Y[k] \rvert\)</span></td>
+<td>signal units × samples</td>
+</tr>
+<tr>
+<td>Amplitude spectrum</td>
+<td><span class="math inline">\(\lvert Y[k] \rvert/N\)</span>, with
+one-sided correction</td>
+<td>signal units</td>
+</tr>
+<tr>
+<td>Power spectrum</td>
+<td><span class="math inline">\(\lvert Y[k] \rvert^2/N\)</span></td>
+<td>signal units²</td>
+</tr>
+<tr>
+<td>Power spectral density</td>
+<td><span class="math inline">\(\lvert Y[k]
+\rvert^2/(F_sN)\)</span></td>
+<td>signal units²/Hz</td>
+</tr>
+</tbody>
+</table>
+<h3 id="read-more">Read more</h3>
+<ul>
+<li><a
+href="https://numpy.org/doc/stable/reference/routines.fft.html">NumPy:
+Discrete Fourier Transform routines</a></li>
+<li><a
+href="https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html">NumPy:
+<code>numpy.fft.fft</code></a></li>
+<li><a
+href="https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html">NumPy:
+<code>numpy.fft.rfft</code></a></li>
+<li><a
+href="https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html">NumPy:
+<code>numpy.fft.fftfreq</code></a></li>
+<li><a
+href="https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html">NumPy:
+<code>numpy.fft.rfftfreq</code></a></li>
+<li><a
+href="https://numpy.org/doc/stable/reference/generated/numpy.fft.fftshift.html">NumPy:
+<code>numpy.fft.fftshift</code></a></li>
+<li><a
+href="https://www.mathworks.com/help/matlab/ref/fft.html">MathWorks:
+MATLAB <code>fft</code></a></li>
+<li><a
+href="https://www.mathworks.com/help/signal/ug/avoid-aliasing-in-signal-downsampling.html">MathWorks:
+Avoid aliasing in signal downsampling</a></li>
+</ul>
+</body>
+</html>
