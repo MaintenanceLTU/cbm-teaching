@@ -9,16 +9,16 @@ The Fast Fourier Transform (FFT) efficiently computes the discrete Fourier trans
 
 ## Content
 
- - [Example code in Python and Matlab](#example-code)
- - - [Python](#python)
- - - [MATLAB](#matlab)
-  - [Additional notes](#additional-notes)
- - - [Power spectrum](#power-spectra)
- - - [Power spectral density](#power-spectral-density)
- - - [Spectrum quantities](#spectrum-quantities)
- - - [Nyquist sampling theorem](#nyquist-theorem)
- - - [Spectral leakage](#leakage)
- - [Read more](#read-more)
+- [Example code in Python and Matlab](#example-code)
+    - [Python](#python)
+    - [MATLAB](#matlab)
+- [Additional notes](#additional-notes)
+    - [Power spectrum](#power-spectra)
+    - [Power spectral density](#power-spectral-density)
+    - [Spectrum quantities](#spectrum-quantities)
+    - [Nyquist sampling theorem](#nyquist-theorem)
+    - [Spectral leakage](#leakage)
+- [Read more](#read-more)
 
 
 ## Example code
