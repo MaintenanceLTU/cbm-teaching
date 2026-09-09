@@ -256,7 +256,7 @@ $$
 
 It is the highest frequency that can be represented without aliasing in a sampled signal. Frequency components above the Nyquist frequency are reflected back into the observable frequency range and appear at incorrect frequencies, a phenomenon known as **aliasing**.
 
-To avoid aliasing, the sampling frequency should be greater than twice the highest frequency present in the signal $F_s > 2f_\text{max}$. If a frequency component exceeds the Nyquist frequency, it is observed at the aliased frequency $f_\text{alias} = \left|f - kF_s\right|$ for an appropriate integer $(k)$ that maps the frequency into the interval $[0, F_s/2]$.
+To avoid aliasing, the sampling frequency should be greater than twice the highest frequency present in the signal $F_s > 2f_\text{max}$. If a frequency component exceeds the Nyquist frequency, it is observed at the aliased frequency $f_\text{alias} = \left\lvert f - kF_s \right\rvert$ for an appropriate integer $(k)$ that maps the frequency into the interval $[0, F_s/2]$.
 
 In practical measurement systems, an analog anti-aliasing filter is normally applied before sampling to attenuate frequency components above the Nyquist frequency.
 
