@@ -1,7 +1,13 @@
 # Power Spectral Density Estimates Using FFT
-This document demonstrates how to estimate power spectral density (PSD) directly from the FFT in Python. The approach follows the standard periodogram scaling and can be compared with the MATLAB example provided by [MathWorks](https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html).
+This tutorial demonstrates how to estimate power spectral density (PSD) directly from the FFT in Python. The approach follows the standard periodogram scaling and can be compared with the MATLAB example provided by [MathWorks](https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html). The effect of windowing, as well as the Welch's method, is also included.
 
-## Example
+Examples
+- [PSD using FFT](#example-PSD-using-FFT)
+- [PSD with windowing](#example-with-windowing)
+- [PSD using Welch's method](#example-with-welchs-method)
+
+
+## Example PSD using FFT
 This example will use even-length input to simplify one-sided FFT calculations. See [FFT examples in Python and Matlab](fft_python_matlab.md) for more general code.
 
 Create a sinusoidal signal with zero-mean Gaussian noise.
