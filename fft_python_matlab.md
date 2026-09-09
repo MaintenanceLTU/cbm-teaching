@@ -261,4 +261,4 @@ Spectral leakage can occur when a signal does not contain an integer number of c
 - <a id="ref-7"></a> [MathWorks: MATLAB `fft`](https://www.mathworks.com/help/matlab/ref/fft.html)
 - <a id="ref-8"></a> [MathWorks: Avoid aliasing in signal downsampling](https://www.mathworks.com/help/signal/ug/avoid-aliasing-in-signal-downsampling.html)
 - <a id="ref-9"></a> [MathWorks: Power Spectral Density Estimates Using FFT](https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html)
-- <a id="ref-10"></a> [Power Spectral Density Estimates Using FFT in Python](psd_python.md)
+- <a id="ref-10"></a> [Power Spectral Density Using Python](psd_python.md)
