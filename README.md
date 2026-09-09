@@ -11,8 +11,8 @@ The examples are written for both Python and MATLAB.
 [FFT with examples in Python and MATLAB](fft_python_matlab.md)
 
 Includes:
-- how to compute DFT using the FFT
-- how to scale the DFT to obtain an amplitude spectrum
+- computation of the DFT using the FFT
+- scaling the DFT to obtain an amplitude spectrum
 - further reading about the power spectrum
 
 ### Power Spectral Density (PSD)
@@ -20,9 +20,10 @@ Includes:
 [PSD estimation in Python](psd_python.md)
 
 Includes:
-- how to estimate PSD using the FFT
-- the effect of windowing
-- Welch's method for PSD estimation
+- PSD estimation using the FFT
+- PSD estimation using the periodogram
+    - Windowing
+    - Welch's method
 
 ## License
 
