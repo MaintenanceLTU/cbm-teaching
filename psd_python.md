@@ -50,7 +50,7 @@ from matplotlib import pyplot as plt
 
 plt.figure()
 plt.plot(F, 10*np.log10(Pxx))
-plt.title("Periodogram Using FFT")
+plt.title("Periodogram using FFT")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Power/Frequency (dB/Hz)")
 plt.grid(True)
@@ -68,6 +68,7 @@ F_den, Pxx_den = signal.periodogram(x, Fs, detrend=False)
 
 plt.figure()
 plt.plot(F_den, 10*np.log10(Pxx_den))
+plt.title("Periodogram using Scipy's signal.periodogram")
 plt.xlabel('Frequency [Hz]')
 plt.ylabel("Power/Frequency (dB/Hz)")
 plt.grid(True)
@@ -77,6 +78,11 @@ mx_dev = np.max(np.abs(Pxx-Pxx_den))
 print(f"Maximum absolute deviation: {max_dev:g}")
 
 ```
+### Example output
+
+![Periodogram using FFT](images/periodogram_fft.png)
+![Periodogram using Scipy's periodogram](images/periodogram_scipy.png)
+
 
 ## Example with windowing
 
@@ -125,6 +131,10 @@ fig.supylabel("PSD (dB/Hz)")
 plt.tight_layout()
 
 ```
+### Example output
+
+![Periodogram with windows](images/psd_window.png)
+
 
 ## Example with Welch's method
 
@@ -180,3 +190,7 @@ fig.supylabel("PSD (dB/Hz)")
 plt.tight_layout()
 
 ```
+
+### Example output
+
+![Periodogram with Welch's method](images/psd_welch.png)
