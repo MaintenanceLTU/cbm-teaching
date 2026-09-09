@@ -7,8 +7,21 @@ The Fast Fourier Transform (FFT) efficiently computes the discrete Fourier trans
 - scale the FFT to obtain an amplitude spectrum; and
 - plot the time-domain signal and its frequency content.
 
+## Content
 
-## Examples
+ - [Example code in Python and Matlab](#example-code)
+ - - [Python](#python)
+ - - [MATLAB](#matlab)
+  - [Additional notes](#additional-notes)
+ - - [Power spectrum](#power-spectra)
+ - - [Power spectral density](#power-spectral-density)
+ - - [Spectrum quantities](#spectrum-quantities)
+ - - [Nyquist sampling theorem](#nyquist-theorem)
+ - - [Spectral leakage](#leakage)
+ - [Read more](#read-more)
+
+
+## Example code
 
 The example creates a signal containing sinusoids at 50 Hz, 120 Hz, and 600 Hz, then adds zero-mean Gaussian noise. It plots the noisy time-domain signal and its two-sided and one-sided amplitude spectra.
 
@@ -211,7 +224,7 @@ $$
 \sum_k E[k] = \sum_n \lvert y[n]\rvert^2
 $$
 
-### Power spectral density (PSD)
+### Power spectral density
 
 $$
 S[k] = \frac{\lvert Y[k]\rvert^2}{F_sN}
@@ -233,7 +246,7 @@ Different spectral quantities emphasize different properties of a signal. The am
 | Power spectral density | $\lvert Y[k] \rvert^2/(F_sN)$                   | signal units²/Hz       |
 
 
-### Nyquist
+### Nyquist theorem
 
 The **Nyquist frequency** is half the sampling frequency:
 
@@ -251,7 +264,7 @@ In practical measurement systems, an analog anti-aliasing filter is normally app
 Spectral leakage can occur when a signal does not contain an integer number of cycles within the sampled interval. Applying a window such as a Hann window reduces leakage, but the window's amplitude effect should be accounted for when accurate amplitude estimates are required.
 
 
-### Read more
+## Read more
 - <a id="ref-1"></a> [NumPy: Discrete Fourier Transform routines](https://numpy.org/doc/stable/reference/routines.fft.html)
 - <a id="ref-2"></a> [NumPy: `numpy.fft.fft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html)
 - <a id="ref-3"></a> [NumPy: `numpy.fft.rfft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html)
