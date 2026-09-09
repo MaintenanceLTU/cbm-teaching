@@ -41,7 +41,6 @@ F = np.arange(N//2+1) * Fs/N
 # Compute periodogram
 Pxx = np.abs(X)**2 / (Fs*N)
 Pxx[1:-1] *= 2
-
 ```
 
 Plot the power in decibels (dB)
@@ -76,7 +75,6 @@ plt.grid(True)
 # Compute maximum absolute deviation between the FFT and periodogram methods
 mx_dev = np.max(np.abs(Pxx-Pxx_den))
 print(f"Maximum absolute deviation: {max_dev:g}")
-
 ```
 ### Example output
 
@@ -129,7 +127,6 @@ fig.supxlabel("Frequency (Hz)")
 fig.supylabel("PSD (dB/Hz)")
 
 plt.tight_layout()
-
 ```
 ### Example output
 
@@ -188,7 +185,6 @@ fig.supxlabel("Frequency (Hz)")
 fig.supylabel("PSD (dB/Hz)")
 
 plt.tight_layout()
-
 ```
 
 ### Example output
