@@ -6,9 +6,17 @@ The examples are written for both Python and MATLAB.
 
 ## Contents
 
-### Fast Fourier Transform
+### Fast Fourier Transform (FFT)
 
-[Fast Fourier Transform with examples in Python and MATLAB](fft_python_matlab.md)
+[FFT with examples in Python and MATLAB](fft_python_matlab.md)
+
+### Power Spectral Density (PSD)
+
+[PSD estimation in Python](psd_python.md)
+Includes
+- how to estimate PSD using FFT
+- the effect of windowing
+- Welch's method for PSD estimation
 
 ## License
 
