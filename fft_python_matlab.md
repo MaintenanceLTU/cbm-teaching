@@ -232,7 +232,7 @@ $$
 
 The power spectral density (PSD) has units of signal units squared per hertz.
 
-MathWorks provides a good example of how to compute the PSD from the FFT, see [Read more](#ref-9). A Python implementation of PSD computation using the FFT, including examples illustrating the effects of windowing and Welch's method, is also available in the [Read more](#ref-10) list.
+MathWorks provides a good example of how to compute the PSD from the FFT, see [Read more: *MathWorks Power Spectral Density Estimates Using FFT*](#ref-9). For a Python implementation of PSD computation using the FFT, including examples of windowing and the Welch's method, see [Read more: *Power Spectral Density Using Python*](#ref-10).
 
 ### Spectrum quantities
 
@@ -261,7 +261,7 @@ To avoid aliasing, the sampling frequency should be greater than twice the highe
 In practical measurement systems, an analog anti-aliasing filter is normally applied before sampling to attenuate frequency components above the Nyquist frequency.
 
 ### Leakage
-Spectral leakage can occur when a signal does not contain an integer number of cycles within the sampled interval. Applying a window such as a Hann window reduces leakage, but the window's amplitude effect should be accounted for when accurate amplitude estimates are required.
+Spectral leakage can occur when a signal does not contain an integer number of cycles within the sampled interval. Applying a window such as a Hann window reduces leakage, but the window's amplitude effect should be accounted for when accurate amplitude estimates are required. The effect of windowing on PSD estimation is also illustrated in *Power Spectral Density Using Python*, see [Read more](#ref-10).
 
 
 ## Read more
