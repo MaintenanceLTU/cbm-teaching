@@ -211,13 +211,15 @@ $$
 \sum_k E[k] = \sum_n \lvert y[n]\rvert^2
 $$
 
-### Power spectral density
+### Power spectral density (PSD)
 
 $$
 S[k] = \frac{\lvert Y[k]\rvert^2}{F_sN}
 $$
 
-The power spectral density has units of signal units squared per hertz.
+The power spectral density (PSD) has units of signal units squared per hertz.
+
+MathWorks provides a good example of how to compute the PSD from the FFT, see [Read more](#ref-9). A Python implementation of PSD computation using the FFT, including examples illustrating the effects of windowing and Welch's method, is also available in the [Read more](#ref-10) list.
 
 ### Spectrum quantities
 
@@ -250,12 +252,13 @@ Spectral leakage can occur when a signal does not contain an integer number of c
 
 
 ### Read more
-
-- [NumPy: Discrete Fourier Transform routines](https://numpy.org/doc/stable/reference/routines.fft.html)
-- [NumPy: `numpy.fft.fft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html)
-- [NumPy: `numpy.fft.rfft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html)
-- [NumPy: `numpy.fft.fftfreq`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html)
-- [NumPy: `numpy.fft.rfftfreq`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html)
-- [NumPy: `numpy.fft.fftshift`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fftshift.html)
-- [MathWorks: MATLAB `fft`](https://www.mathworks.com/help/matlab/ref/fft.html)
-- [MathWorks: Avoid aliasing in signal downsampling](https://www.mathworks.com/help/signal/ug/avoid-aliasing-in-signal-downsampling.html)
+- <a id="ref-1"></a> [NumPy: Discrete Fourier Transform routines](https://numpy.org/doc/stable/reference/routines.fft.html)
+- <a id="ref-2"></a> [NumPy: `numpy.fft.fft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html)
+- <a id="ref-3"></a> [NumPy: `numpy.fft.rfft`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html)
+- <a id="ref-4"></a> [NumPy: `numpy.fft.fftfreq`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html)
+- <a id="ref-5"></a> [NumPy: `numpy.fft.rfftfreq`](https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html)
+- <a id="ref-6"></a> [NumPy: `numpy.fft.fftshift`](https://numpy.org/doc/stable/reference/generated/numpy.fft.fftshift.html)
+- <a id="ref-7"></a> [MathWorks: MATLAB `fft`](https://www.mathworks.com/help/matlab/ref/fft.html)
+- <a id="ref-8"></a> [MathWorks: Avoid aliasing in signal downsampling](https://www.mathworks.com/help/signal/ug/avoid-aliasing-in-signal-downsampling.html)
+- <a id="ref-9"></a> [MathWorks: Power Spectral Density Estimates Using FFT](https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html)
+- <a id="ref-10"></a> [Power Spectral Density Estimates Using FFT in Python](psd_python.md)
