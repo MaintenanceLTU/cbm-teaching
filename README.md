@@ -25,16 +25,16 @@ Includes:
     - Windowing
     - Welch's method
 
-## Tutorials
+## Related tutorials
 
 ### Introduction to Python
-[Python and Programming Basics](https://github.com/MaintenanceLTU/python-tutorial)
+[Python and Programming Basics](https://maintenanceltu.github.io/python-tutorial/)
 
 An introductory tutorial that develops the concepts needed to read, reason about, and write short Python programs.
 
 
 ### IoT Tutorial: Sensor → MQTT → Dashboard
-[IoT Tutorial for Arduino and Python (PC/Laptop)](https://github.com/MaintenanceLTU/iot-mqtt-node-red-lab)
+[IoT Tutorial for Arduino and Python (PC/Laptop)](https://maintenanceltu.github.io/iot-mqtt-node-red-lab/)
 
 This tutorial introduces an end-to-end IoT workflow for acquiring sensor data, publishing it through an MQTT broker (Mosquitto), and visualizing it in a Node-RED dashboard. It provides hands-on paths for Arduino and Python (PC/laptop) and covers MQTT identifiers, topics, and JSON message formats used in condition monitoring applications.
 
